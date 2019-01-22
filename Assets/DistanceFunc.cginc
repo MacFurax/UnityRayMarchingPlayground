@@ -9,16 +9,16 @@
 // s: radius
 float sdSphere(float3 p, float s)
 {
-	return length(p) - s;
+    return length(p) - s;
 }
 
 // Box
 // b: size of box in x/y/z
 float sdBox(float3 p, float3 b)
 {
-	float3 d = abs(p) - b;
-	return min(max(d.x, max(d.y, d.z)), 0.0) +
-		length(max(d, 0.0));
+    float3 d = abs(p) - b;
+    return min(max(d.x, max(d.y, d.z)), 0.0) +
+        length(max(d, 0.0));
 }
 
 // Torus
@@ -26,8 +26,8 @@ float sdBox(float3 p, float3 b)
 // t.y: thickness
 float sdTorus(float3 p, float2 t)
 {
-	float2 q = float2(length(p.xz) - t.x, p.y);
-	return length(q) - t.y;
+    float2 q = float2(length(p.xz) - t.x, p.y);
+    return length(q) - t.y;
 }
 
 // Cylinder
@@ -35,15 +35,15 @@ float sdTorus(float3 p, float2 t)
 // h.y = height
 float sdCylinder(float3 p, float2 h)
 {
-	float2 d = abs(float2(length(p.xz), p.y)) - h;
-	return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+    float2 d = abs(float2(length(p.xz), p.y)) - h;
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
 }
 
 float sdCone(float3 p, float2 c)
 {
-	// c must be normalized
-	float q = length(p.xy);
-	return dot(c, float2(q, p.z));
+    // c must be normalized
+    float q = length(p.xy);
+    return dot(c, float2(q, p.z));
 }
 
 // (Infinite) Plane
@@ -51,43 +51,43 @@ float sdCone(float3 p, float2 c)
 // n.w: offset
 float sdPlane(float3 p, float4 n)
 {
-	// n must be normalized
-	return dot(p, n.xyz) + n.w;
+    // n must be normalized
+    return dot(p, n.xyz) + n.w;
 }
 
 float sdHexPrism(float3 p, float2 h)
 {
-	float3 q = abs(p);
-	return max(q.z - h.y, max((q.x*0.866025 + q.y*0.5), q.y) - h.x);
+    float3 q = abs(p);
+    return max(q.z - h.y, max((q.x*0.866025 + q.y*0.5), q.y) - h.x);
 }
 
 float sdTriPrism(float3 p, float2 h)
 {
-	float3 q = abs(p);
-	return max(q.z - h.y, max(q.x*0.866025 + p.y*0.5, -p.y) - h.x*0.5);
+    float3 q = abs(p);
+    return max(q.z - h.y, max(q.x*0.866025 + p.y*0.5, -p.y) - h.x*0.5);
 }
 
 float sdCapsule(float3 p, float3 a, float3 b, float r)
 {
-	float3 pa = p - a, ba = b - a;
-	float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-	return length(pa - ba*h) - r;
+    float3 pa = p - a, ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba*h) - r;
 }
 
 float sdCappedCone(in float3 p, in float3 c)
 {
-	float2 q = float2(length(p.xz), p.y);
-	float2 v = float2(c.z*c.y / c.x, -c.z);
-	float2 w = v - q;
-	float2 vv = float2(dot(v, v), v.x*v.x);
-	float2 qv = float2(dot(v, w), v.x*w.x);
-	float2 d = max(qv, 0.0)*qv / vv;
-	return sqrt(dot(w, w) - max(d.x, d.y))* sign(max(q.y*v.x - q.x*v.y, w.y));
+    float2 q = float2(length(p.xz), p.y);
+    float2 v = float2(c.z*c.y / c.x, -c.z);
+    float2 w = v - q;
+    float2 vv = float2(dot(v, v), v.x*v.x);
+    float2 qv = float2(dot(v, w), v.x*w.x);
+    float2 d = max(qv, 0.0)*qv / vv;
+    return sqrt(dot(w, w) - max(d.x, d.y))* sign(max(q.y*v.x - q.x*v.y, w.y));
 }
 
 float sdEllipsoid(in float3 p, in float3 r)
 {
-	return (length(p / r) - 1.0) * min(min(r.x, r.y), r.z);
+    return (length(p / r) - 1.0) * min(min(r.x, r.y), r.z);
 }
 
 // BOOLEAN OPERATIONS //
@@ -96,25 +96,41 @@ float sdEllipsoid(in float3 p, in float3 r)
 // Union
 float opU(float d1, float d2)
 {
-	return min(d1, d2);
+    return min(d1, d2);
 }
 
 // Union (with material data)
 float2 opU_mat( float2 d1, float2 d2 )
 {
-	return (d1.x<d2.x) ? d1 : d2;
+    return (d1.x<d2.x) ? d1 : d2;
+}
+
+// smooth union 
+float opSmoothU(float d1, float d2, float k)
+{
+    float h = clamp(0.5 + 0.5*(d2 - d1) / k, 0.0, 1.0);
+    return lerp(d2, d1, h) - k * h*(1.0 - h);
+}
+
+// smooth union (with material data)
+float opSmoothU_mat(float2 d1, float2 d2, float k)
+{
+    float h = clamp(0.5 + 0.5*(d2.x - d1.x) / k, 0.0, 1.0);
+    float v = lerp(d2.x, d1.x, h) - k * h*(1.0 - h);
+    float v2 = lerp(d1.y, d2.y, h);
+    return float2(v, v2);
 }
 
 // Subtraction
 float opS(float d1, float d2)
 {
-	return max(-d1, d2);
+    return max(-d1, d2);
 }
 
 // Intersection
 float opI(float d1, float d2)
 {
-	return max(d1, d2);
+    return max(d1, d2);
 }
 
 // Union (with extra data)
@@ -122,7 +138,7 @@ float opI(float d1, float d2)
 // d1,d2.y: Extra data (material data for example)
 float opU(float2 d1, float2 d2)
 {
-	return (d1.x < d2.x) ? d1 : d2;
+    return (d1.x < d2.x) ? d1 : d2;
 }
 
 // Intersection (with extra data)
@@ -130,5 +146,5 @@ float opU(float2 d1, float2 d2)
 // d1,d2.y: Extra data (material data for example)
 float opI(float2 d1, float2 d2)
 {
-	return (d1.x > d2.x) ? d1 : d2;
+    return (d1.x > d2.x) ? d1 : d2;
 }
