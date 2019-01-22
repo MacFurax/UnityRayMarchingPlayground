@@ -1,6 +1,10 @@
 Distance Field Raymarcher for Unity
 -----------------------------------
 
+Use as source for my experimentation.
+
+Bellow original readme.
+
 This is an implementation of Distance Field Raymarching in the Unity game engine.  It was created to be used as a reference implementation in future projects.  For a comprehensive technical writeup about how Distance Field Raymarching works, see [this article on my blog](http://flafla2.github.io/2016/10/01/raymarching.html).
 
 Below are a few of the major features of this implementation:
