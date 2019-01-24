@@ -95,10 +95,12 @@ public class RaymarchGeneric : SceneViewFilter
             Vector3.right * Mathf.Sin(Time.time) * 5, 
             Quaternion.identity,
             Vector3.one);
+
         MatTorus *= Matrix4x4.TRS(
             Vector3.zero, 
             Quaternion.Euler(new Vector3(0, 0, (Time.time * 200) % 360)), 
             Vector3.one);
+
         // Send the torus matrix to our shader
         EffectMaterial.SetMatrix("_MatTorus_InvModel", MatTorus.inverse);
 
@@ -117,6 +119,15 @@ public class RaymarchGeneric : SceneViewFilter
         EffectMaterial.SetMatrix("_FrustumCornersES", GetFrustumCorners(CurrentCamera));
         EffectMaterial.SetMatrix("_CameraInvViewMatrix", CurrentCamera.cameraToWorldMatrix);
         EffectMaterial.SetVector("_CameraWS", CurrentCamera.transform.position);
+
+        Matrix4x4 partPos = new Matrix4x4(
+            new Vector4(-0.5f + (Mathf.Sin(Time.time)+1.0f)/2.0f, 0.5f - (Mathf.Sin(Time.time) + 1.0f) / 2.0f, 0.0f, 0.2f),
+            new Vector4(-0.5f, -0.5f, 0.0f, 0.2f),
+            new Vector4(0.5f, 0.5f, 0.0f, 0.2f),
+            new Vector4(0.5f, -0.5f, 0.0f, 0.2f)
+        );
+
+        EffectMaterial.SetMatrix("_PartPos", partPos);
 
         EffectMaterial.SetVector("_Resolution", new Vector2((float)Camera.main.pixelWidth, (float)Camera.main.pixelHeight));
 
