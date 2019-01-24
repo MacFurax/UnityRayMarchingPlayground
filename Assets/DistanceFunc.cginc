@@ -5,6 +5,9 @@
 // The result is negative if you are inside the shape.  All shapes are centered about the origin, so you may need to
 // transform your input point (p) to account for translation or rotation
 
+#define mix(a,b,c) lerp(a,b,c)
+
+
 // Sphere
 // s: radius
 float sdSphere(float3 p, float s)
@@ -113,11 +116,11 @@ float opSmoothU(float d1, float d2, float k)
 }
 
 // smooth union (with material data)
-float opSmoothU_mat(float2 d1, float2 d2, float k)
+float2 opSmoothU(float2 d1, float2 d2, float k)
 {
     float h = clamp(0.5 + 0.5*(d2.x - d1.x) / k, 0.0, 1.0);
-    float v = lerp(d2.x, d1.x, h) - k * h*(1.0 - h);
-    float v2 = lerp(d1.y, d2.y, h);
+    float v = mix(d2.x, d1.x, h) - k * h * (1.0 - h);
+    float v2 = mix(d1.y, d2.y, h);
     return float2(v, v2);
 }
 
@@ -127,6 +130,19 @@ float opS(float d1, float d2)
     return max(-d1, d2);
 }
 
+float opSmoothS(float d1, float d2, float k)
+{
+  float h = clamp(0.5 - 0.5*(d2 + d1) / k, 0.0, 1.0);
+  return lerp(d2, -d1, h) + k * h * (1.0 - h);
+}
+
+float2 opSmoothS(float2 d1, float2 d2, float k)
+{
+  float h = clamp(0.5 - 0.5*(d2.x + d1.x) / k, 0.0, 1.0);
+  float v = lerp(d2.x, -d1.x, h) + k * h*(1.0 - h);
+  float d = lerp(d2.y, d1.y, h);
+  return float2(v, d);
+}
 // Intersection
 float opI(float d1, float d2)
 {
