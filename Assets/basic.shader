@@ -108,8 +108,8 @@
                 /*float2 ret = opU_mat(d_torus, d_box);
                 ret = opU_mat(ret, d_sphere);*/
 
-                float2 ret = opSmoothU_mat(d_torus, d_box, 0.5);
-                ret = opSmoothU_mat(ret, d_sphere, 0.9);
+                float2 ret = opSmoothU(d_torus, d_box, 0.5);
+                ret = opSmoothU(ret, d_sphere, 0.9);
 
                 return ret;
             }

@@ -119,7 +119,7 @@ public class RaymarchGeneric : SceneViewFilter
         EffectMaterial.SetVector("_CameraWS", CurrentCamera.transform.position);
 
         EffectMaterial.SetVector("_Resolution", new Vector2((float)Camera.main.pixelWidth, (float)Camera.main.pixelHeight));
-        //Debug.Log( "Camera resolution ["+ Camera.main.pixelWidth + "x"+ Camera.main.pixelHeight + "]");
+
         CustomGraphicsBlit(source, destination, EffectMaterial, 0);
     }
 
