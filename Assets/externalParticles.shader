@@ -107,11 +107,16 @@
         vec2 uv = fragCoord;
         uv.x *= _Resolution.x / _Resolution.y;
 
-        // dein circle position and radius
-        vec3 cercle1 = vec3(_PartPos[0][0], _PartPos[1][0], _PartPos[3][0]);
+        // get  circle position and radius
+        /*vec3 cercle1 = vec3(_PartPos[0][0], _PartPos[1][0], _PartPos[3][0]);
         vec3 cercle2 = vec3(_PartPos[0][1], _PartPos[1][1], _PartPos[3][1]);
         vec3 cercle3 = vec3(_PartPos[0][2], _PartPos[1][2], _PartPos[3][2]);
-        vec3 cercle4 = vec3(_PartPos[0][3], _PartPos[1][3], _PartPos[3][3]);
+        vec3 cercle4 = vec3(_PartPos[0][3], _PartPos[1][3], _PartPos[3][3]);*/
+
+        vec3 cercle1 = vec3(_PartPos[0][0], _PartPos[0][1], _PartPos[0][3]);
+        vec3 cercle2 = vec3(_PartPos[1][0], _PartPos[1][1], _PartPos[1][3]);
+        vec3 cercle3 = vec3(_PartPos[2][0], _PartPos[2][1], _PartPos[2][3]);
+        vec3 cercle4 = vec3(_PartPos[3][0], _PartPos[3][1], _PartPos[3][3]);
        
         //cercle1.x += (sin(iTime) + 1.) / 2.;
         //cercle1.y -= (sin(iTime) + 1.) / 2.;
@@ -129,17 +134,19 @@
         float c4 = smoothstep(cercle4.z + .2, cercle4.z - 0.2, d4);
 
         // sum 
-        float c = (c1 + c2 + c3 + c4)*1.5;
+        float s = (c1 + c2 + c3 + c4)*1.5;
         //float c = c1;
 
         // treshold, comment it to see blur
-        c = (c > .4 ? 1. : .2);
+        s = (s > .4 ? 1. : 0.);
 
         // color
-        //float s = (sin(iTime) + 1.) * .5;
-        //vec3 col = vec3((uv.x + .5) * c, (uv.y + .5) * c, s / 2. + .4);
+        float c = (sin(iTime) + 1.) * .5;
+        vec3 col = vec3((uv.x + .5) * c, (uv.y + .5) * c, s / 2. + .4) * s;
 
-        vec3 col = vec3(c, c, c);
+        /*float2 p = uv * 5.0;
+        float c = smoothstep(0.27, 0.3, frac(p.x - (sin(p.y) + sin(iTime*0.5)) * 2.5) * s );
+        vec3 col = vec3(c, c, c);*/
 
         // Output to screen
         fragColor = vec4(col, 1.0);

@@ -7,6 +7,8 @@ public class RaymarchGeneric : SceneViewFilter
 {
     public Transform SunLight;
 
+    particulesManager pm;
+
     [SerializeField]
     private Shader _EffectShader;
     [SerializeField]
@@ -75,6 +77,11 @@ public class RaymarchGeneric : SceneViewFilter
         */
     }
 
+    void Start()
+    {
+        pm = gameObject.AddComponent<particulesManager>();
+    }
+
     [ImageEffectOpaque]
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
@@ -120,14 +127,14 @@ public class RaymarchGeneric : SceneViewFilter
         EffectMaterial.SetMatrix("_CameraInvViewMatrix", CurrentCamera.cameraToWorldMatrix);
         EffectMaterial.SetVector("_CameraWS", CurrentCamera.transform.position);
 
-        Matrix4x4 partPos = new Matrix4x4(
-            new Vector4(-0.5f + (Mathf.Sin(Time.time)+1.0f)/2.0f, 0.5f - (Mathf.Sin(Time.time) + 1.0f) / 2.0f, 0.0f, 0.2f),
-            new Vector4(-0.5f, -0.5f, 0.0f, 0.2f),
-            new Vector4(0.5f, 0.5f, 0.0f, 0.2f),
-            new Vector4(0.5f, -0.5f, 0.0f, 0.2f)
-        );
+        //Matrix4x4 partPos = new Matrix4x4(
+        //    new Vector4(-0.5f + (Mathf.Sin(Time.time)+1.0f)/2.0f, 0.5f - (Mathf.Sin(Time.time) + 1.0f) / 2.0f, 0.0f, 0.2f),
+        //    new Vector4(-0.5f, -0.5f, 0.0f, 0.2f),
+        //    new Vector4(0.5f, 0.5f, 0.0f, 0.2f),
+        //    new Vector4(0.5f, -0.5f, 0.0f, 0.2f)
+        //);
 
-        EffectMaterial.SetMatrix("_PartPos", partPos);
+        EffectMaterial.SetMatrix("_PartPos", pm.Particules);
 
         EffectMaterial.SetVector("_Resolution", new Vector2((float)Camera.main.pixelWidth, (float)Camera.main.pixelHeight));
 
