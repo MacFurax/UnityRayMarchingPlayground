@@ -34,19 +34,27 @@ public class particulesManager : MonoBehaviour
 
         if (msg.Address.Equals("/3/xyM_l"))
         {
-           
+
             OSCValue[] vals = msg.GetValues(types);
 
             //Debug.Log("Vals received ["+vals.Length+"] - ["+ vals[0].FloatValue + ","+ vals[1].FloatValue + "]");
 
-            particules[0, 0] = -0.5f + (vals[1].FloatValue - 0.5f );
-            particules[0, 1] = 0.5f + ( vals[0].FloatValue - 0.5f );
+            particules[0, 0] = -0.5f + (vals[1].FloatValue - 0.5f) * 2.0f;
+            particules[0, 1] = 0.5f + (vals[0].FloatValue - 0.5f) * 2.0f;
         }
         else if (msg.Address.Equals("/3/xyM_r"))
         {
             OSCValue[] vals = msg.GetValues(types);
-            particules[1, 0] = 0.5f + (vals[1].FloatValue - 0.5f);
-            particules[1, 1] = 0.5f + (vals[0].FloatValue - 0.5f);
+            particules[1, 0] = 0.5f + (vals[1].FloatValue - 0.5f) * 2.0f;
+            particules[1, 1] = 0.5f + (vals[0].FloatValue - 0.5f) * 2.0f;
+        }
+        else if (msg.Address.Equals("/faderM"))
+        {
+            OSCValue[] vals = msg.GetValues(types);
+            particules[0, 3] = 0.2f * vals[0].FloatValue * 2.0f;
+            particules[1, 3] = 0.2f * vals[0].FloatValue * 2.0f;
+            particules[2, 3] = 0.2f * vals[0].FloatValue * 2.0f;
+            particules[3, 3] = 0.2f * vals[0].FloatValue * 2.0f;
         }
     }
 

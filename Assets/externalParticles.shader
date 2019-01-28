@@ -92,10 +92,6 @@
           return o;
       }
 
-
-
-
-
       void mainImage(out vec4 fragColor, in vec2 fragCoord)
       {
         //fragColor = vec4(fragCoord.x, fragCoord.y, 0.0, 1.0);
@@ -108,18 +104,10 @@
         uv.x *= _Resolution.x / _Resolution.y;
 
         // get  circle position and radius
-        /*vec3 cercle1 = vec3(_PartPos[0][0], _PartPos[1][0], _PartPos[3][0]);
-        vec3 cercle2 = vec3(_PartPos[0][1], _PartPos[1][1], _PartPos[3][1]);
-        vec3 cercle3 = vec3(_PartPos[0][2], _PartPos[1][2], _PartPos[3][2]);
-        vec3 cercle4 = vec3(_PartPos[0][3], _PartPos[1][3], _PartPos[3][3]);*/
-
         vec3 cercle1 = vec3(_PartPos[0][0], _PartPos[0][1], _PartPos[0][3]);
         vec3 cercle2 = vec3(_PartPos[1][0], _PartPos[1][1], _PartPos[1][3]);
         vec3 cercle3 = vec3(_PartPos[2][0], _PartPos[2][1], _PartPos[2][3]);
         vec3 cercle4 = vec3(_PartPos[3][0], _PartPos[3][1], _PartPos[3][3]);
-       
-        //cercle1.x += (sin(iTime) + 1.) / 2.;
-        //cercle1.y -= (sin(iTime) + 1.) / 2.;
 
         // get distance from circle center to uv
         float d1 = distance(cercle1.xy, uv);

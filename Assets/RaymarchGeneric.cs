@@ -79,7 +79,7 @@ public class RaymarchGeneric : SceneViewFilter
 
     void Start()
     {
-        pm = gameObject.AddComponent<particulesManager>();
+        pm = gameObject.GetComponent<particulesManager>();
     }
 
     [ImageEffectOpaque]
