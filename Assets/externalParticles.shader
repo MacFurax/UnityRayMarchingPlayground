@@ -126,7 +126,8 @@
         //float c = c1;
 
         // treshold, comment it to see blur
-        s = (s > .4 ? 1. : 0.);
+        //s = (s > .4 ? 1. : 0.);
+        s = smoothstep(0.5, 0.55, s);
 
         // color
         float c = (sin(iTime) + 1.) * .5;
