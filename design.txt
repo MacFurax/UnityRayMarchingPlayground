@@ -1,0 +1,31 @@
+ShaderInputHandler
+	<Name>
+	Associated Shader (Material)
+	Associated input & uniforms handlers
+		Update
+		Populate uniforms
+
+Input
+	get inputs moves
+	get inputs trigger
+
+Conductor
+	List<Input>
+	List<ShaderInputHandler>
+	Update
+
+
+
+
+init ShaderInputHandler
+init Inputs
+
+Conductor::Update
+	getRemoteConfig( osc )
+	get inputsUpdates
+	update selected ShaderInputHandler(inputs)
+	let ShaderInputHandler populate uniforms
+
+
+close Inputs
+close ShaderInputHandler
