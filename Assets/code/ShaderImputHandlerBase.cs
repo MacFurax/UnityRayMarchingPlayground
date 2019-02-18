@@ -13,7 +13,7 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
     {
     }
 
-    public virtual void StartHandler()
+    public virtual void Init()
     {
     }
 
@@ -21,7 +21,7 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
     {
     }
 
-    public virtual void StopHandler()
+    public virtual void Close()
     {
     }
 }

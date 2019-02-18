@@ -17,14 +17,14 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
         
     }
 
-    public override void StartHandler()
+    public override void Init()
     {
         oscSource = GetComponent<OSCSource>();
         oscSource.BindAddress("/2DMetaballs/*", MessageReceived);
 
     }
 
-    public override void StopHandler()
+    public override void Close()
     {
         
     }

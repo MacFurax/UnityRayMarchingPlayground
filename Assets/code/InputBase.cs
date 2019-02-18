@@ -7,7 +7,7 @@ public abstract class InputBase : MonoBehaviour
 
     public string InputName { get => inputName; }
 
-    public virtual void StartInput()
+    public virtual void Init()
     {
 
     }
@@ -17,7 +17,7 @@ public abstract class InputBase : MonoBehaviour
 
     }
 
-    public virtual void StopInput()
+    public virtual void Close()
     {
     }
 }

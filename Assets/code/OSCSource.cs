@@ -17,6 +17,11 @@ public class OSCSource : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void Init()
+    {
         _receiver = gameObject.AddComponent<OSCReceiver>();
         _receiver.LocalPort = bindPort;
 

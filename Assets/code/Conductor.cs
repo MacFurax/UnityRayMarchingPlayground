@@ -24,28 +24,28 @@ public class Conductor : MonoBehaviour
     {
         // get OSC source to receive Conductor remote config
         oscSource = GetComponent<OSCSource>();
+        oscSource.Init();
+
         oscSource.BindAddress("/conductor/*", MessageReceived);
     
         // load handlers as components
         shaderImputHandlers = GetComponents<ShaderImputHandlerBase>();
-        Debug.Log("Get ["+ shaderImputHandlers.Length + "] shader Handlers");
-        string logStr = "Handler names : \n";
         foreach (ShaderImputHandlerBase sh in shaderImputHandlers)
         {
             shaderNames.Add(sh.HandlerName);
-            logStr += "\t- " + sh.HandlerName + "\n";
 
-            sh.StartHandler();
+            Debug.Log("Available Shader handler: " + sh.HandlerName);
+
+            sh.Init();
         }
-        Debug.Log(logStr);
 
         // load imputs
         inputs = GetComponents<InputBase>();
         foreach ( InputBase ib in inputs)
         {
             Debug.Log("Available input: " + ib.InputName);
+            ib.Init();
         }
-
 
     }
 

@@ -14,14 +14,14 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
         base.PopulateUniforms(ref mat);
     }
 
-    public override void StartHandler()
+    public override void Init()
     {
-        base.StartHandler();
+        base.Init();
     }
 
-    public override void StopHandler()
+    public override void Close()
     {
-        base.StopHandler();
+        base.Close();
     }
 
     public override void UpdateHandler()
