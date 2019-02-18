@@ -72,4 +72,16 @@ public class InputOSC : InputBase
     {
         inputs.Clear();
     }
+
+    private void GeneratePlayerId(string address)
+    {
+        if (address.Contains("/xy"))
+        {
+
+        }
+        else if (address.Contains("/push"))
+        {
+
+        }
+    }
 }
