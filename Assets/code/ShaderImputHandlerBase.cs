@@ -9,19 +9,19 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
 
     public string HandlerName { get => handlerName; }
 
-    protected virtual void PopulateUniforms( ref Material mat)
+    public virtual void PopulateUniforms( ref Material mat)
     {
     }
 
-    protected virtual void StartHandler()
+    public virtual void StartHandler()
     {
     }
 
-    protected virtual void UpdateHandler()
+    public virtual void UpdateHandler()
     {
     }
 
-    protected virtual void StopHandler()
+    public virtual void StopHandler()
     {
     }
 }

@@ -9,22 +9,22 @@ public class RayMarchEmerge : ShaderImputHandlerBase
         handlerName = "Ray March Emerge";
     }
 
-    protected override void PopulateUniforms(ref Material mat)
+    public override void PopulateUniforms(ref Material mat)
     {
         base.PopulateUniforms(ref mat);
     }
 
-    protected override void StartHandler()
+    public override void StartHandler()
     {
         base.StartHandler();
     }
 
-    protected override void StopHandler()
+    public override void StopHandler()
     {
         base.StopHandler();
     }
 
-    protected override void UpdateHandler()
+    public override void UpdateHandler()
     {
         base.UpdateHandler();
     }
