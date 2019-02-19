@@ -8,6 +8,8 @@ public class Conductor : MonoBehaviour
 
     private InputBase[] inputs;
     private ShaderImputHandlerBase[] shaderImputHandlers;
+    private int activeShaderHandlerIdx = 0;
+    private ShaderImputHandlerBase activeSHaderHandler;
 
     private OSCSource oscSource;
 
@@ -17,6 +19,7 @@ public class Conductor : MonoBehaviour
 
     public void PopulateUniforms(Material mat)
     {
+
     }
 
     // Start is called before the first frame update
@@ -30,6 +33,7 @@ public class Conductor : MonoBehaviour
     
         // load handlers as components
         shaderImputHandlers = GetComponents<ShaderImputHandlerBase>();
+
         foreach (ShaderImputHandlerBase sh in shaderImputHandlers)
         {
             shaderNames.Add(sh.HandlerName);
@@ -39,14 +43,49 @@ public class Conductor : MonoBehaviour
             sh.Init();
         }
 
+        if (shaderImputHandlers.Length > 0)
+        {
+            activeShaderHandlerIdx = 0;
+            activeSHaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
+        }
+        else
+        {
+            activeShaderHandlerIdx = -1;
+            activeSHaderHandler = null;
+        }
+
         // load imputs
         inputs = GetComponents<InputBase>();
         foreach ( InputBase ib in inputs)
         {
             Debug.Log("Available input: " + ib.InputName);
             ib.Init();
+
+            ib.OnImputMove += Ib_OnImputMove;
+            ib.OnTriggerChanged += Ib_OnTriggerChanged;
         }
 
+    }
+
+    private void Ib_OnTriggerChanged(object sender, InputBase.ImputTrigger e)
+    {
+        
+    }
+
+    private void Ib_OnImputMove(object sender, InputBase.ImputMoveEventArgs e)
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        foreach (InputBase ib in inputs)
+        {
+            ib.Close();
+
+            ib.OnImputMove -= Ib_OnImputMove;
+            ib.OnTriggerChanged -= Ib_OnTriggerChanged;
+        }
     }
 
     // Update is called once per frame
@@ -62,12 +101,12 @@ public class Conductor : MonoBehaviour
 
         if (message.Address.Equals("/conductor/prob"))
         {
-            ReplyBlob(message);
+            ReplyProb(message);
         }
 
     }
 
-    private void ReplyBlob(OSCMessage message)
+    private void ReplyProb(OSCMessage message)
     {
         probRep = !probRep;
         OSCBundle bundle = new OSCBundle();
