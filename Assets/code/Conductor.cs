@@ -99,14 +99,15 @@ public class Conductor : MonoBehaviour
         //Debug.Log(message);
         //float tmp = 0;
 
-        if (message.Address.Equals("/conductor/prob"))
+        // receive prob from Open Stage Control
+        if (message.Address.Equals("/conductor/probOSC"))
         {
-            ReplyProb(message);
+            ReplyProbOpenStageControl(message);
         }
 
     }
 
-    private void ReplyProb(OSCMessage message)
+    private void ReplyProbOpenStageControl(OSCMessage message)
     {
         probRep = !probRep;
         OSCBundle bundle = new OSCBundle();
@@ -120,8 +121,9 @@ public class Conductor : MonoBehaviour
         int count = 1;
         foreach ( string name in shaderNames )
         {
-            msg = new OSCMessage("/conductor/shaderList" + count);
-            msg.AddValue(OSCValue.String(name));
+            msg = new OSCMessage("/EDIT");
+            msg.AddValue(OSCValue.String("shaderList" + count));
+            msg.AddValue(OSCValue.String("{'label':'"+name+"', 'color' : 'green'}"));
             bundle.AddPacket(msg);
             count++;
         }
