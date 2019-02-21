@@ -11,17 +11,21 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
 
     public virtual void PopulateUniforms( ref Material mat)
     {
+
     }
 
     public virtual void Init()
     {
+
     }
 
     public virtual void UpdateHandler()
     {
+
     }
 
     public virtual void Close()
     {
+
     }
 }
