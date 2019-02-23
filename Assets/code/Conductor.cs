@@ -160,6 +160,8 @@ public class Conductor : MonoBehaviour
         activeShaderHandlerIdx = shaderId;
 
         activeShaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
+
+
                
         UpdateLedStatus(message);
     }
