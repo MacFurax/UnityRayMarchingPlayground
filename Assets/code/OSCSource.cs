@@ -22,10 +22,10 @@ public class OSCSource : MonoBehaviour
 
     public void Init()
     {
-        _receiver = gameObject.AddComponent<OSCReceiver>();
+        _receiver = gameObject.GetComponent<OSCReceiver>();
         _receiver.LocalPort = bindPort;
 
-        _transmiter = gameObject.AddComponent<OSCTransmitter>();
+        _transmiter = gameObject.GetComponent<OSCTransmitter>();
     }
 
     // Update is called once per frame

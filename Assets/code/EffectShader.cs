@@ -5,6 +5,9 @@
 [AddComponentMenu("Effects/Shader")]
 public class EffectShader : SceneViewFilter
 {
+
+    Conductor conductor;
+
     public Transform SunLight;
 
     [SerializeField]
@@ -75,8 +78,24 @@ public class EffectShader : SceneViewFilter
         */
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
+        conductor = GetComponent<Conductor>();
+        conductor.Init();
+        conductor.OnNewShaderActivated += Conductor_OnNewShaderActivated;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Conductor_OnNewShaderActivated(object sender, Conductor.ActivateShaderEventArgs e)
+    {
+        EffectMaterial.shader = e.newShader;
     }
 
     [ImageEffectOpaque]
@@ -92,7 +111,7 @@ public class EffectShader : SceneViewFilter
         // EffectMaterial.SetFloat("_MyVariable", 13.37f);
         // This would set the shader uniform _MyVariable to value 13.37
 
-
+        conductor?.PopulateUniforms(EffectMaterial);
 
         EffectMaterial.SetVector("_LightDir", SunLight ? SunLight.forward : Vector3.down);
 

@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public abstract class InputBase : MonoBehaviour
-{ 
+public class InputBase : MonoBehaviour
+{
     public class ImputMoveEventArgs
     {
-        string playerId;
-        Vector2 pos;
+        public string playerId;
+        public Vector2 pos;
 
         public ImputMoveEventArgs(string playerId, Vector2 pos)
         {
@@ -18,9 +18,9 @@ public abstract class InputBase : MonoBehaviour
 
     public class ImputTrigger
     {
- 
-        string playerId;
-        bool triggerState;
+
+        public string playerId;
+        public bool triggerState;
 
         public ImputTrigger(string playerId, bool triggerState)
         {
@@ -29,16 +29,21 @@ public abstract class InputBase : MonoBehaviour
         }
     }
 
-    public event EventHandler<ImputMoveEventArgs> OnImputMove;
+    public event EventHandler<ImputMoveEventArgs> OnInputMove;
     public event EventHandler<ImputTrigger> OnTriggerChanged;
 
     protected string inputName = "to_fill";
 
     public string InputName { get => inputName; }
 
+    public void InputMove( string playerId, Vector2 pos)
+    {
+        OnInputMove?.Invoke(this, new ImputMoveEventArgs(playerId, pos));
+    }
+
     public virtual void Init()
     {
-
+        
     }
 
     public virtual void UpdateInput()

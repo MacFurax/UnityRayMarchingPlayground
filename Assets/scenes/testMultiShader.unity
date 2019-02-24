@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 305121035}
   - component: {fileID: 305121034}
   - component: {fileID: 305121030}
+  - component: {fileID: 305121040}
+  - component: {fileID: 305121039}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -215,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbda79dfd79721c48b42bb8c683959c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 0a98d0be8d362c448b7c40165acaedee, type: 3}
 --- !u!114 &305121031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3301b5db9c1fc441ad6334df94339e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 0}
+  _shader: {fileID: 4800000, guid: b55e091a1f53481478d092e638b199ef, type: 3}
 --- !u!114 &305121033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d9f66b84eb77b7458f3ce77eac23560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 0a98d0be8d362c448b7c40165acaedee, type: 3}
 --- !u!114 &305121034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7492786f01136604fb6d1dceea131f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 3106ad45d92921d4b82551445db66987, type: 3}
 --- !u!114 &305121035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd3358b104e8744398fae9b4fb37a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 9c13e1d4a2a7c3548bae4b9aba61ceef, type: 3}
 --- !u!114 &305121036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +327,45 @@ MonoBehaviour:
   _PerfColorRamp: {fileID: 2800000, guid: f904b160f51724469ba27807b2c5887d, type: 3}
   _RaymarchDrawDistance: 40
   _DebugPerformance: 0
+--- !u!114 &305121039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305121026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464088183d2a1484ab8fb64e356c9f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConnect: 1
+  closeOnPause: 0
+  mapBundle: {fileID: 0}
+  workInEditor: 0
+  localPortMode: 2
+  localReceiver: {fileID: 0}
+  localPort: 7000
+  remoteHost: 127.0.0.1
+  remotePort: 7000
+  useBundle: 0
+--- !u!114 &305121040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305121026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbba286dc10e549b2bdec947ef8dbd3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConnect: 1
+  closeOnPause: 0
+  mapBundle: {fileID: 0}
+  workInEditor: 0
+  localPort: 8000
 --- !u!1 &1285463559
 GameObject:
   m_ObjectHideFlags: 0

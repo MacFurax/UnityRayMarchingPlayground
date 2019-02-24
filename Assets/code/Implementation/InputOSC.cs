@@ -61,6 +61,7 @@ public class InputOSC : InputBase
         if (message.Address.Contains("/xy"))
         {
             Debug.Log("Get new pos from ["+message.Address+"]");
+            InputMove(GeneratePlayerId(message), GetPos(message));
         }
         else if (message.Address.Contains("/push"))
         {
@@ -73,15 +74,24 @@ public class InputOSC : InputBase
         inputs.Clear();
     }
 
-    private void GeneratePlayerId(string address)
+    private string GeneratePlayerId(OSCMessage message)
     {
+        string address = message.Address;
         if (address.Contains("/xy"))
         {
-
+            string id = address.Substring(11);
+            return id;
         }
         else if (address.Contains("/push"))
         {
-
+            string id = address.Substring(13);
+            return id;
         }
+        return "01";
+    }
+
+    private Vector2 GetPos(OSCMessage message)
+    {
+        return new Vector2();
     }
 }

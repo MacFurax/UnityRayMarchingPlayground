@@ -6,10 +6,19 @@ using UnityEngine;
 
 public class Conductor : MonoBehaviour
 {
+    public class ActivateShaderEventArgs : EventArgs
+    {
+        public Shader newShader;
+
+        public ActivateShaderEventArgs(Shader newShader)
+        {
+            this.newShader = newShader;
+        }
+    }
 
     private InputBase[] inputs;
     private ShaderImputHandlerBase[] shaderImputHandlers;
-    private int activeShaderHandlerIdx = 0;
+    private int activeShaderHandlerIdx = -1;
     private int previousActiveShaderHandlerIdx = 0;
     private ShaderImputHandlerBase activeShaderHandler;
 
@@ -19,17 +28,24 @@ public class Conductor : MonoBehaviour
 
     private List<string> shaderNames = new List<string>();
 
+    public ShaderImputHandlerBase ActiveShaderHandler { get => activeShaderHandler; }
+
+    public event EventHandler<ActivateShaderEventArgs> OnNewShaderActivated;
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="mat"></param>
     public void PopulateUniforms(Material mat)
     {
-
+        if (activeShaderHandlerIdx >= 0)
+        {
+            activeShaderHandler.PopulateUniforms(ref mat);
+        }
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         // get OSC source to receive Conductor remote config
         oscSource = GetComponent<OSCSource>();
@@ -53,6 +69,7 @@ public class Conductor : MonoBehaviour
         {
             activeShaderHandlerIdx = 0;
             activeShaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
+            OnNewShaderActivated?.Invoke(this, new ActivateShaderEventArgs(activeShaderHandler._shader));
         }
         else
         {
@@ -67,7 +84,7 @@ public class Conductor : MonoBehaviour
             Debug.Log("Available input: " + ib.InputName);
             ib.Init();
 
-            ib.OnImputMove += Ib_OnImputMove;
+            ib.OnInputMove += Ib_OnImputMove;
             ib.OnTriggerChanged += Ib_OnTriggerChanged;
         }
 
@@ -102,7 +119,7 @@ public class Conductor : MonoBehaviour
         {
             ib.Close();
 
-            ib.OnImputMove -= Ib_OnImputMove;
+            ib.OnInputMove -= Ib_OnImputMove;
             ib.OnTriggerChanged -= Ib_OnTriggerChanged;
         }
     }
@@ -119,9 +136,8 @@ public class Conductor : MonoBehaviour
     /// <param name="message"></param>
     private void MessageReceived(OSCMessage message)
     {
-        //Debug.Log(message);
-        //float tmp = 0;
-
+        Debug.Log("OSC message received " + message.Address);
+        
         // receive prob from Open Stage Control
         if (message.Address.Equals("/conductor/probOSC"))
         {
@@ -161,6 +177,7 @@ public class Conductor : MonoBehaviour
 
         activeShaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
 
+        OnNewShaderActivated?.Invoke(this, new ActivateShaderEventArgs(activeShaderHandler._shader));
 
                
         UpdateLedStatus(message);
@@ -183,6 +200,8 @@ public class Conductor : MonoBehaviour
         oscSource.Send(message.Ip.ToString(), bundle);
 
         SendShaderListOpenStageControl(message);
+
+        UpdateLedStatus(message, true);
     }
 
     /// <summary>
@@ -220,19 +239,52 @@ public class Conductor : MonoBehaviour
 
         oscSource.Send(message.Ip.ToString(), bundle);
 
-        UpdateLedStatus(message);
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="message"></param>
-    private void UpdateLedStatus(OSCMessage message)
+    private void UpdateLedStatus(OSCMessage message, bool all = false)
     {
         OSCBundle bundle = new OSCBundle();
 
-        if (activeShaderHandlerIdx != previousActiveShaderHandlerIdx)
+        if (!all)
         {
+            // only send active new on ad disactive previous
+            if (activeShaderHandlerIdx != previousActiveShaderHandlerIdx)
+            {
+                int count = 1;
+                foreach (string name in shaderNames)
+                {
+
+                    if (count == activeShaderHandlerIdx + 1)
+                    {
+                        var msg = new OSCMessage("/conductor/shaderLed" + count);
+                        msg.AddValue(OSCValue.Float(1.0f));
+                        bundle.AddPacket(msg);
+                    }
+
+                    if (count == previousActiveShaderHandlerIdx + 1)
+                    {
+                        var msg = new OSCMessage("/conductor/shaderLed" + count);
+                        msg.AddValue(OSCValue.Float(0.0f));
+                        bundle.AddPacket(msg);
+                    }
+
+                    count++;
+                }
+            }
+            else
+            {
+                var msg = new OSCMessage("/conductor/shaderLed" + (activeShaderHandlerIdx + 1));
+                msg.AddValue(OSCValue.Float(1.0f));
+                bundle.AddPacket(msg);
+            }
+        }
+        else
+        {
+            // send all led status
             int count = 1;
             foreach (string name in shaderNames)
             {
@@ -243,23 +295,18 @@ public class Conductor : MonoBehaviour
                     msg.AddValue(OSCValue.Float(1.0f));
                     bundle.AddPacket(msg);
                 }
-
-                if (count == previousActiveShaderHandlerIdx + 1)
+                else
                 {
                     var msg = new OSCMessage("/conductor/shaderLed" + count);
                     msg.AddValue(OSCValue.Float(0.0f));
                     bundle.AddPacket(msg);
                 }
-
+                
                 count++;
             }
         }
-        else
-        {
-            var msg = new OSCMessage("/conductor/shaderLed" + (activeShaderHandlerIdx + 1));
-            msg.AddValue(OSCValue.Float(1.0f));
-            bundle.AddPacket(msg);
-        }
+
+        
 
         oscSource.Send(message.Ip.ToString(), bundle);
 
