@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InputBase;
 
 public abstract class ShaderImputHandlerBase : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
     public virtual void PopulateUniforms( ref Material mat)
     {
 
+    }
+
+    public virtual void NewMove(ImputMoveEventArgs newMove)
+    {
     }
 
     public virtual void Init()

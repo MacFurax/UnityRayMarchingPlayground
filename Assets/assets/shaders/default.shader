@@ -1,4 +1,4 @@
-﻿Shader "My Shaders/unliteShader01"
+﻿Shader "My Shaders/Default"
 {
     Properties
     {

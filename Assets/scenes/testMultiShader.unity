@@ -148,7 +148,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305121026}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &305121028
 Camera:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d9f66b84eb77b7458f3ce77eac23560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shader: {fileID: 4800000, guid: 0a98d0be8d362c448b7c40165acaedee, type: 3}
+  _shader: {fileID: 4800000, guid: 3106ad45d92921d4b82551445db66987, type: 3}
 --- !u!114 &305121034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SunLight: {fileID: 1285463561}
-  _EffectShader: {fileID: 4800000, guid: 3106ad45d92921d4b82551445db66987, type: 3}
+  _EffectShader: {fileID: 4800000, guid: c76f42a44178f2349a8295b308fb3d19, type: 3}
   _MaterialColorRamp: {fileID: 2800000, guid: 26a0db22407d740e38807b456182332e, type: 3}
   _PerfColorRamp: {fileID: 2800000, guid: f904b160f51724469ba27807b2c5887d, type: 3}
   _RaymarchDrawDistance: 40

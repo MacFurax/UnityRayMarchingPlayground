@@ -92,6 +92,9 @@ public class InputOSC : InputBase
 
     private Vector2 GetPos(OSCMessage message)
     {
-        return new Vector2();
+        OSCValueType[] types = { OSCValueType.Float };
+        OSCValue[] vals = message.GetValues(types);
+
+        return new Vector2(vals[0].FloatValue, vals[1].FloatValue);
     }
 }

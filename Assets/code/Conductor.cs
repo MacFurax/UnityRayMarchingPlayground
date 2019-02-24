@@ -107,7 +107,10 @@ public class Conductor : MonoBehaviour
     /// <param name="e"></param>
     private void Ib_OnImputMove(object sender, InputBase.ImputMoveEventArgs e)
     {
-        
+        if (activeShaderHandlerIdx >= 0)
+        {
+            activeShaderHandler.NewMove(e);
+        }
     }
 
     /// <summary>
@@ -179,7 +182,6 @@ public class Conductor : MonoBehaviour
 
         OnNewShaderActivated?.Invoke(this, new ActivateShaderEventArgs(activeShaderHandler._shader));
 
-               
         UpdateLedStatus(message);
     }
 
