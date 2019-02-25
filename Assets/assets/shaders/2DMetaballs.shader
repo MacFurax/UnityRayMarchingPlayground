@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        
     }
     SubShader
     {
@@ -12,12 +13,16 @@
         Pass
         {
             CGPROGRAM
+  
             #pragma vertex vert
             #pragma fragment frag
             
+            #define mod fmod
+            #define vec3 float3
+            
             #include "UnityCG.cginc"
 
-            #pragma target 3.0
+            #pragma target 4.0
 
             struct appdata
             {
@@ -32,10 +37,12 @@
                 //float3 ray : TEXCOORD1;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            float2 _Resolution;
-
+            uniform sampler2D _MainTex;
+            uniform float4 _MainTex_ST;
+            uniform float2 _Resolution;
+            uniform float4x4 _Particles;
+            float3 colors[4];
+           
             v2f vert (appdata v)
             {
                 v2f o;
@@ -50,11 +57,42 @@
                 return o;
             }
 
+            float3 HUEtoRGB(in float H)
+            {
+              float R = abs(H * 6 - 3) - 1;
+              float G = 2 - abs(H * 6 - 2);
+              float B = 2 - abs(H * 6 - 4);
+              return saturate(float3(R, G, B));
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
-                i.uv.x *= _ScreenParams.x/ _ScreenParams.y;
+                float r = _ScreenParams.x / _ScreenParams.y;
+                i.uv.x *= r;
 
-                fixed4 col = float4(i.uv.x, i.uv.y, 0.0, 1.0);
+                float s = 0.0f;
+                float3 spcol= float4(0.0, 0.0, 0.0, 1.0);
+
+                fixed4 col = float4(i.uv.x, i.uv.y, 1.0, 1.0);
+
+                for (int aa = 0; aa < 4; aa++)
+                {
+                  float2 p = _Particles[aa].xy;
+                  p.x *= r;
+                  float d = 1.0-distance(i.uv, p.xy);
+                  d = smoothstep(0.7, 1.0, d);
+                  s += d;
+
+                  float3 t = colors[aa];
+                  t = HUEtoRGB(0.2*aa);
+                  colors[aa] = t;
+                  //spcol = (spcol + pcol) * 0.5;
+                  s = smoothstep(0.4, 0.41, s);
+                }
+
+                
+
+                col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
 
                 return col;
             }

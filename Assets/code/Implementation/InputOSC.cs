@@ -60,7 +60,6 @@ public class InputOSC : InputBase
     {
         if (message.Address.Contains("/xy"))
         {
-            Debug.Log("Get new pos from ["+message.Address+"]");
             InputMove(GeneratePlayerId(message), GetPos(message));
         }
         else if (message.Address.Contains("/push"))

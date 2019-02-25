@@ -139,8 +139,6 @@ public class Conductor : MonoBehaviour
     /// <param name="message"></param>
     private void MessageReceived(OSCMessage message)
     {
-        Debug.Log("OSC message received " + message.Address);
-        
         // receive prob from Open Stage Control
         if (message.Address.Equals("/conductor/probOSC"))
         {

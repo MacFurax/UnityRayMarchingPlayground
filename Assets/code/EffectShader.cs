@@ -84,8 +84,8 @@ public class EffectShader : SceneViewFilter
     void Start()
     {
         conductor = GetComponent<Conductor>();
-        conductor.Init();
         conductor.OnNewShaderActivated += Conductor_OnNewShaderActivated;
+        conductor.Init();
     }
 
     /// <summary>
