@@ -41,7 +41,6 @@
             uniform float4 _MainTex_ST;
             uniform float2 _Resolution;
             uniform float4x4 _Particles;
-            float3 colors[4];
            
             v2f vert (appdata v)
             {
@@ -65,13 +64,20 @@
               return saturate(float3(R, G, B));
             }
 
+            float3 HSLtoRGB(in float3 HSL)
+            {
+              float3 RGB = HUEtoRGB(HSL.x);
+              float C = (1 - abs(2 * HSL.z - 1)) * HSL.y;
+              return (RGB - 0.5) * C + HSL.z;
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 float r = _ScreenParams.x / _ScreenParams.y;
                 i.uv.x *= r;
 
                 float s = 0.0f;
-                float3 spcol= float4(0.0, 0.0, 0.0, 1.0);
+                float3 spcol= HUEtoRGB(0.0);
 
                 fixed4 col = float4(i.uv.x, i.uv.y, 1.0, 1.0);
 
@@ -83,14 +89,17 @@
                   d = smoothstep(0.7, 1.0, d);
                   s += d;
 
-                  float3 t = colors[aa];
-                  t = HUEtoRGB(0.2*aa);
-                  colors[aa] = t;
-                  //spcol = (spcol + pcol) * 0.5;
-                  s = smoothstep(0.4, 0.41, s);
+                  float uc = smoothstep(0.0,0.71, s);
+
+                  float3 t = HUEtoRGB(0.2*aa) * uc;
+                  spcol = (spcol + t) * 0.25;
+                  //spcol = float3(uc, uc, uc);
+                  //spcol = t;
                 }
 
-                
+                s = smoothstep(0.4, 0.41, s);
+
+                //spcol = HUEtoRGB(0.0);
 
                 col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
 
