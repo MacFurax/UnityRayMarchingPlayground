@@ -35,7 +35,7 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
         int count = 0;
         foreach ( Vector2 vals in posPerPlayer.Values)
         {
-            if (count > maxBalls) break;
+            if (count >= maxBalls) break;
             particules[count, 0] = vals.x;
             particules[count, 1] = vals.y;
             count++;
@@ -85,7 +85,8 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
     /// <param name="newMove"></param>
     public override void NewMove(InputBase.ImputMoveEventArgs newMove)
     {
-        //Debug.Log("TwoDMetaBalls::NewMove - " + newMove.pos);
+        
+        Debug.Log("TwoDMetaBalls::NewMove - player ["+ newMove.playerId+ "] " + newMove.pos);
         posPerPlayer[newMove.playerId] = newMove.pos;
     }
 }

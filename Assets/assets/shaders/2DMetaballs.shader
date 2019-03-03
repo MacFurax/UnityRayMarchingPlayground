@@ -22,7 +22,7 @@
             
             #include "UnityCG.cginc"
 
-            #pragma target 4.0
+            #pragma target 5.0
 
             struct appdata
             {
