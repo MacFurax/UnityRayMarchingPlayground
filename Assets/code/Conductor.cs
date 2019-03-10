@@ -107,6 +107,9 @@ public class Conductor : MonoBehaviour
     /// <param name="e"></param>
     private void Ib_OnImputMove(object sender, InputBase.ImputMoveEventArgs e)
     {
+        //InputBase ib = (InputBase)sender;
+        //Debug.Log("InputMove from ["+ib.InputName+"] player id ["+e.playerId+"] pos ["+e.pos+"]");
+
         if (activeShaderHandlerIdx >= 0)
         {
             activeShaderHandler.NewMove(e);
