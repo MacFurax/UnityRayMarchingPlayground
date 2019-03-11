@@ -22,7 +22,7 @@
             
             #include "UnityCG.cginc"
 
-            #pragma target 4.0
+            #pragma target 5.0
 
             struct appdata
             {
@@ -77,7 +77,7 @@
                 i.uv.x *= r;
 
                 float s = 0.0f;
-                float3 spcol= HUEtoRGB(0.0);
+                float3 spcol = float3(1.0, 1.0, 1.0);
 
                 fixed4 col = float4(i.uv.x, i.uv.y, 1.0, 1.0);
 
@@ -89,10 +89,10 @@
                   d = smoothstep(0.7, 1.0, d);
                   s += d;
 
-                  float uc = smoothstep(0.0,0.71, s);
+                  float uc = smoothstep(0.0,0.71, d);
 
                   float3 t = HUEtoRGB(0.2*aa) * uc;
-                  spcol = (spcol + t) * 0.25;
+                  spcol = (spcol + t) * 0.8;
                   //spcol = float3(uc, uc, uc);
                   //spcol = t;
                 }

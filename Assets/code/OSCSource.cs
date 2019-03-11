@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class OSCSource : MonoBehaviour
 {
-    public string bindIP = "127.0.0.1";
+    //public string bindIP = "127.0.0.1";
     public int bindPort = 8000;
     public int replyPort = 9000;
 

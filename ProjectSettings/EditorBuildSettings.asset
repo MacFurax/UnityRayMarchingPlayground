@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/scenes/testbed.unity
     guid: ad5f0e33ea622bf4cb0fc3054b1f4230
+  - enabled: 1
+    path: Assets/scenes/testMultiShader.unity
+    guid: be72eafea0914cf4297cb084955fe7b8
   m_configObjects: {}
