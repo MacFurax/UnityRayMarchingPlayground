@@ -6,6 +6,7 @@ using static InputBase;
 public abstract class ShaderImputHandlerBase : MonoBehaviour
 {
     protected string handlerName = "<change me>";
+    protected bool activated = false;
     public Shader _shader;
 
     public string HandlerName { get => handlerName; }
@@ -32,5 +33,15 @@ public abstract class ShaderImputHandlerBase : MonoBehaviour
     public virtual void Close()
     {
 
+    }
+
+    public virtual void Activate()
+    {
+        activated = true;
+    }
+
+    public virtual void Deactivate()
+    {
+        activated = false;
     }
 }

@@ -42,6 +42,9 @@ Shader "My Shaders/3DMetaballs"
 
         uniform float _DrawDistance;
 
+        uniform float4 _Particles[10];
+        uniform float _ParticlesCount;
+
         struct appdata
         {
           // Remember, the z value here contains the index of _FrustumCornersES to use
@@ -92,8 +95,8 @@ Shader "My Shaders/3DMetaballs"
       // return.y: material data for closest object
       float2 map(float3 p) {
         
-        float2 d_box = float2(sdBox(p - float3(-3,0,0), float3(1.25,1.5,1.5)), 0.25);
-        float2 d_sphere = float2(sdSphere(p - float3(3,0,0), 1), 0.75);
+        float2 d_box = float2(sdBox(p - float3(-1,0,0), float3(1.25,1.5,1.5)), 0.25);
+        float2 d_sphere = float2(sdSphere(p - float3(1,0,0), 1), 0.75);
 
         /*float2 ret = opU_mat(d_torus, d_box);
         ret = opU_mat(ret, d_sphere);*/
