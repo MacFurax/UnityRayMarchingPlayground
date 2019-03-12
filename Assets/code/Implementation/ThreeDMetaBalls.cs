@@ -47,6 +47,7 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
         {
             Vector3 v3 = Random.onUnitSphere*2.0f;
             float v1 = Random.value;
+            v1 = 0.2f;
             Vector4 v4 = new Vector4(v3.x, v3.y, v3.z, v1);
             particles.Add(v4);
         }
