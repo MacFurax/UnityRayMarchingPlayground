@@ -74,7 +74,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float r = _ScreenParams.x / _ScreenParams.y;
-                i.uv.x *= r;
+                i.uv.x *= r; // apply screen ration
 
                 float s = 0.0f;
                 float3 spcol = float3(1.0, 1.0, 1.0);
@@ -84,22 +84,21 @@
                 for (int aa = 0; aa < 4; aa++)
                 {
                   float2 p = _Particles[aa].xy;
-                  p.x *= r;
-                  float d = 1.0-distance(i.uv, p.xy);
-                  d = smoothstep(0.7, 1.0, d);
-                  s += d;
+                  p.x *= r; // apply screen ration
 
-                  float uc = smoothstep(0.0,0.71, d);
+                  float d = 1.0-distance(i.uv, p.xy); // distance from current uv to particle center
+                  d = smoothstep(0.7, 1.0, d); // limit the distance field
+                  
+                  s += d; // sum particles distance field to get praticle merge zone
 
-                  float3 t = HUEtoRGB(0.2*aa) * uc;
+                  float uc = smoothstep(0.0,0.71, d); // 
+
+                  float3 t = HUEtoRGB(0.21*aa) * uc;
                   spcol = (spcol + t) * 0.8;
-                  //spcol = float3(uc, uc, uc);
-                  //spcol = t;
+
                 }
 
                 s = smoothstep(0.4, 0.41, s);
-
-                //spcol = HUEtoRGB(0.0);
 
                 col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
 
