@@ -103,13 +103,15 @@ Shader "My Shaders/3DMetaballs"
         return ret;*/
 
         float4 po = _Particles[0];
-        float2 ret = float2(sdSphere(p - po.xyz, po.w), 0.0);
+        float2 ret = float2(sdSphere(p - po.xyz, po.w), 0.25);
 
-        for (int i = 1; i < _ParticlesCount; ++i) {
+        for (float i = 1; i < _ParticlesCount; ++i) {
+
             po = _Particles[i];
-            float2 s = float2(sdSphere(p - po.xyz, po.w), ((float)(i)) );
+            float2 s = float2(sdSphere(p - po.xyz, po.w), 0.6);
 
-            ret = opSmoothU(ret, s, 0.9);
+            //ret = opSmoothU(ret, s, 0.1);
+            ret = opU(ret, s);
         }
 
         return ret;
@@ -155,7 +157,8 @@ Shader "My Shaders/3DMetaballs"
             if (d.x < 0.001) {
                 float3 n = calcNormal(p);
                 float light = dot(-_LightDir.xyz, n);
-                ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).xyz * light, 1);
+                //ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).xyz * light, 1);
+                ret = fixed4(tex2D(_ColorRamp_Material, float2(0.6, 0)).xyz * light, 1);
                 break;
             }
 
