@@ -107,7 +107,7 @@ Shader "My Shaders/3DMetaballs"
 
         for (int i = 1; i < _ParticlesCount; ++i) {
             po = _Particles[i];
-            float2 s = float2(sdSphere(p - po.xyz, po.w), ((float)(i)/_ParticlesCount) );
+            float2 s = float2(sdSphere(p - po.xyz, po.w), ((float)(i)) );
 
             ret = opSmoothU(ret, s, 0.9);
         }
