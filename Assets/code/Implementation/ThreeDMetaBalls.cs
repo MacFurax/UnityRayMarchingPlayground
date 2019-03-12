@@ -23,6 +23,7 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
     public override void Init()
     {
         //base.Init();
+
     }
 
     public override void Close()
@@ -35,6 +36,30 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
         //base.UpdateHandler();
         if (activated)
         {
+
+        }
+    }
+
+    public void Start()
+    {
+        // init balls position
+        for (int x = 0; x < 10; x++)
+        {
+            Vector3 v3 = Random.onUnitSphere*2.0f;
+            float v1 = Random.value;
+            Vector4 v4 = new Vector4(v3.x, v3.y, v3.z, v1);
+            particles.Add(v4);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Update()
+    {
+        if (activated)
+        {
+
         }
     }
 

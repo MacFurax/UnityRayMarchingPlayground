@@ -95,18 +95,27 @@ Shader "My Shaders/3DMetaballs"
       // return.y: material data for closest object
       float2 map(float3 p) {
         
-        float2 d_box = float2(sdBox(p - float3(-1,0,0), float3(1.25,1.5,1.5)), 0.25);
+        /*float2 d_box = float2(sdBox(p - float3(-1,0,0), float3(1.25,1.5,1.5)), 0.25);
         float2 d_sphere = float2(sdSphere(p - float3(1,0,0), 1), 0.75);
-
-        /*float2 ret = opU_mat(d_torus, d_box);
-        ret = opU_mat(ret, d_sphere);*/
-
-        //float2 ret = opSmoothU(d_torus, d_box, 0.5);
+               
         float2 ret = opSmoothU(d_box, d_sphere, 0.9);
+
+        return ret;*/
+
+        float4 po = _Particles[0];
+        float2 ret = float2(sdSphere(p - po.xyz, po.w), 0.0);
+
+        for (int i = 1; i < _ParticlesCount; ++i) {
+            po = _Particles[i];
+            float2 s = float2(sdSphere(p - po.xyz, po.w), ((float)(i)/_ParticlesCount) );
+
+            ret = opSmoothU(ret, s, 0.9);
+        }
 
         return ret;
       }
 
+      // calculate a normal at the given position
       float3 calcNormal(in float3 pos)
       {
           const float2 eps = float2(0.001, 0.0);

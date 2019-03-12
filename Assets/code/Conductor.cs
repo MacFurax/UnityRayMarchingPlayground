@@ -50,7 +50,7 @@ public class Conductor : MonoBehaviour
         // get OSC source to receive Conductor remote config
         oscSource = GetComponent<OSCSource>();
         oscSource.Init();
-
+        // bind OSC message for conductor remote controlle
         oscSource.BindAddress("/conductor/*", MessageReceived);
     
         // load handlers as components
@@ -65,19 +65,22 @@ public class Conductor : MonoBehaviour
             sh.Init();
         }
 
+        // activate first shaderHandler 
         if (shaderImputHandlers.Length > 0)
         {
             activeShaderHandlerIdx = 0;
             activeShaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
             OnNewShaderActivated?.Invoke(this, new ActivateShaderEventArgs(activeShaderHandler._shader));
+            activeShaderHandler.Activate();
         }
         else
         {
             activeShaderHandlerIdx = -1;
+            previousActiveShaderHandlerIdx = -1;
             activeShaderHandler = null;
         }
 
-        // load imputs
+        // load imputs manager
         inputs = GetComponents<InputBase>();
         foreach ( InputBase ib in inputs)
         {
@@ -133,7 +136,10 @@ public class Conductor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        /*if (activeShaderHandlerIdx != -1)
+        {
+            activeShaderHandler.UpdateHandler();
+        }*/
     }
 
     /// <summary>
@@ -175,6 +181,8 @@ public class Conductor : MonoBehaviour
         {
             return;
         }
+
+
 
         previousActiveShaderHandlerIdx = activeShaderHandlerIdx;
         activeShaderHandlerIdx = shaderId;
@@ -260,7 +268,6 @@ public class Conductor : MonoBehaviour
                 int count = 1;
                 foreach (string name in shaderNames)
                 {
-
                     if (count == activeShaderHandlerIdx + 1)
                     {
                         var msg = new OSCMessage("/conductor/shaderLed" + count);

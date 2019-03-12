@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 305121030}
   - component: {fileID: 305121040}
   - component: {fileID: 305121039}
+  - component: {fileID: 305121042}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -200,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305121026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -6.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -322,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SunLight: {fileID: 1285463561}
-  _EffectShader: {fileID: 4800000, guid: 3106ad45d92921d4b82551445db66987, type: 3}
+  _EffectShader: {fileID: 4800000, guid: 22f7f43b417462a42b88acfaf2ee0682, type: 3}
   _MaterialColorRamp: {fileID: 2800000, guid: 26a0db22407d740e38807b456182332e, type: 3}
   _PerfColorRamp: {fileID: 2800000, guid: f904b160f51724469ba27807b2c5887d, type: 3}
   _RaymarchDrawDistance: 40
@@ -378,6 +379,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47bac36cbafb08459fdb2ec3ddfb433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &305121042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305121026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518adf2b2b558e947a6cd3326e46a19c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSensitivity: 90
+  climbSpeed: 4
+  normalMoveSpeed: 10
+  slowMoveFactor: 0.25
+  fastMoveFactor: 3
+--- !u!1 &335099704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335099705}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &335099705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335099704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1285463559
 GameObject:
   m_ObjectHideFlags: 0
