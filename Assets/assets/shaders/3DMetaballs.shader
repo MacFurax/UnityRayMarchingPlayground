@@ -21,7 +21,7 @@ Shader "My Shaders/3DMetaballs"
         #pragma multi_compile __ DEBUG_PERFORMANCE
         // You may need to use an even later shader model target, depending on how many instructions you have
         // or if you need variable-length for loops.
-        #pragma target 3.0
+        #pragma target 5.0
 
         #include "UnityCG.cginc"
         #include "DistanceFunc.cginc"
@@ -43,14 +43,14 @@ Shader "My Shaders/3DMetaballs"
         uniform float _DrawDistance;
 
         uniform float4 _Particles[10];
-        uniform float _ParticlesCount;
+        uniform int _ParticlesCount;
 
         struct appdata
         {
           // Remember, the z value here contains the index of _FrustumCornersES to use
           float4 vertex : POSITION;
           float2 uv : TEXCOORD0;
-      };
+        };
 
       struct v2f
       {
@@ -93,28 +93,20 @@ Shader "My Shaders/3DMetaballs"
       // negative answer.
       // return.x: result of distance field
       // return.y: material data for closest object
-      float2 map(float3 p) {
-        
-        /*float2 d_box = float2(sdBox(p - float3(-1,0,0), float3(1.25,1.5,1.5)), 0.25);
-        float2 d_sphere = float2(sdSphere(p - float3(1,0,0), 1), 0.75);
-               
-        float2 ret = opSmoothU(d_box, d_sphere, 0.9);
+      float2 map(float3 p) 
+      {
+          float4 po = _Particles[0];
+          float2 ret = float2(sdSphere(p - po.xyz, po.w), 0.0);
 
-        return ret;*/
+          for (int i = 1; i < _ParticlesCount; i++)
+          {
+              po = _Particles[i];
+              float2 ds = float2(sdSphere(p - po.xyz, po.w), (float)i/_ParticlesCount);
+              //ret = opU_mat(ret, ds);
+              ret = opSmoothU(ret, ds, 0.5);
+          }
 
-        float4 po = _Particles[0];
-        float2 ret = float2(sdSphere(p - po.xyz, po.w), 0.25);
-
-        for (float i = 1; i < _ParticlesCount; ++i) {
-
-            po = _Particles[i];
-            float2 s = float2(sdSphere(p - po.xyz, po.w), 0.6);
-
-            //ret = opSmoothU(ret, s, 0.1);
-            ret = opU(ret, s);
-        }
-
-        return ret;
+          return ret;
       }
 
       // calculate a normal at the given position
@@ -157,8 +149,8 @@ Shader "My Shaders/3DMetaballs"
             if (d.x < 0.001) {
                 float3 n = calcNormal(p);
                 float light = dot(-_LightDir.xyz, n);
-                //ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).xyz * light, 1);
-                ret = fixed4(tex2D(_ColorRamp_Material, float2(0.6, 0)).xyz * light, 1);
+                ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).rgb * light, 1);
+                //ret = fixed4(fixed3(d.y,d.y,d.y), 1.0);
                 break;
             }
 
@@ -228,8 +220,9 @@ Shader "My Shaders/3DMetaballs"
         #endif
 
         // Returns final color using alpha blending
-        return fixed4(col*(1.0 - add.w) + add.xyz * add.w,1.0);
-        //return fixed4(i.uv.x, 0.0, 0.0, 1.0);
+        return fixed4(col*(1.0 - add.w) + add.xyz * add.w,1.0); // keep what camera see as background
+        //return fixed4(add.xyz, 1.0); // make background black
+        //return fixed4(i.uv.x, 0.0, 0.0, 1.0); // for debug
       }
       ENDCG
     }
