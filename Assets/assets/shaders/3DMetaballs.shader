@@ -142,18 +142,21 @@ Shader "My Shaders/3DMetaballs"
       fixed4 raymarch(float3 ro, float3 rd, float s) {
           fixed4 ret = fixed4(0,0,0,0);
 
-          const int maxstep = 64;
+          const int maxstep = 64; // TODO try lower
           float t = 0; // current distance traveled along ray
           for (int i = 0; i < maxstep; ++i) {
             // If we run past the depth buffer, or if we exceed the max draw distance,
             // stop and return nothing (transparent pixel).
             // this way raymarched objects and traditional meshes can coexist.
-            if (t >= s || t > _DrawDistance) {
-                ret = fixed4(0, 0, 0, 0);
+            /*if (t >= s || t > _DrawDistance) {
+                ret = fixed4(0, 0, 0, 1);
                 ret.rgb = applyFog(ret.rgb, t, _FogScater);
-                ret.w = 1.0;
                 break;
-            }
+            }*/
+
+            // do this to avoid steps in fog, but lower performance
+            ret = fixed4(0, 0, 0, 1);
+            ret.rgb = applyFog(ret.rgb, t, _FogScater);
 
             float3 p = ro + rd * t; // World space position of sample
             float2 d = map(p);		// Sample of distance field (see map())
@@ -164,7 +167,6 @@ Shader "My Shaders/3DMetaballs"
                 float light = dot(-_LightDir.xyz, n);
                 ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).rgb * light, 1);
                 ret.rgb = applyFog(ret.rgb, t, _FogScater);
-                ret.w = 1.0;
                 //ret = fixed4(fixed3(d.y,d.y,d.y), 1.0);
                 break;
             }

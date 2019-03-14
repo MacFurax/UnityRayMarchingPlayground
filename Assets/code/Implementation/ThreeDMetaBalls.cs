@@ -117,7 +117,9 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
     {
         if (message.Address.Equals("/3DMetaballs/fogScater"))
         {
+            OSCValue[] vals = message.GetValues(message.GetTypes());
 
+            fogScater = vals[0].FloatValue; 
         }
     }
 }
