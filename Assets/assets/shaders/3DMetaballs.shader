@@ -42,8 +42,10 @@ Shader "My Shaders/3DMetaballs"
 
         uniform float _DrawDistance;
 
+        // specyfic shader uniforms
         uniform float4 _Particles[10];
         uniform int _ParticlesCount;
+        uniform float _FogScater;
 
         struct appdata
         {
@@ -124,6 +126,15 @@ Shader "My Shaders/3DMetaballs"
           return normalize(nor);
       }
 
+      float3 applyFog(in float3  rgb,       // original color of the pixel
+          in float distance, // camera to point distance
+          in float b)
+      {
+          float fogAmount = 1.0 - exp(-distance * b);
+          float3  fogColor = float3(0.5, 0.6, 0.7);
+          return mix(rgb, fogColor, fogAmount);
+      }
+
       // Raymarch along given ray
       // ro: ray origin
       // rd: ray direction
@@ -139,6 +150,8 @@ Shader "My Shaders/3DMetaballs"
             // this way raymarched objects and traditional meshes can coexist.
             if (t >= s || t > _DrawDistance) {
                 ret = fixed4(0, 0, 0, 0);
+                ret.rgb = applyFog(ret.rgb, t, _FogScater);
+                ret.w = 1.0;
                 break;
             }
 
@@ -150,6 +163,8 @@ Shader "My Shaders/3DMetaballs"
                 float3 n = calcNormal(p);
                 float light = dot(-_LightDir.xyz, n);
                 ret = fixed4(tex2D(_ColorRamp_Material, float2(d.y,0)).rgb * light, 1);
+                ret.rgb = applyFog(ret.rgb, t, _FogScater);
+                ret.w = 1.0;
                 //ret = fixed4(fixed3(d.y,d.y,d.y), 1.0);
                 break;
             }
@@ -162,6 +177,8 @@ Shader "My Shaders/3DMetaballs"
 
         return ret;
       }
+
+      
 
       // Modified raymarch loop that displays a heatmap of ray sample counts
       // Useful for performance testing and analysis
@@ -190,6 +207,8 @@ Shader "My Shaders/3DMetaballs"
           // we have reached maxstep steps.
           return fixed4(tex2D(_ColorRamp_PerfMap, float2(1, 0)).xyz, 1);
       }
+
+      
 
       fixed4 frag(v2f i) : SV_Target
       {
@@ -220,7 +239,7 @@ Shader "My Shaders/3DMetaballs"
         #endif
 
         // Returns final color using alpha blending
-        return fixed4(col*(1.0 - add.w) + add.xyz * add.w,1.0); // keep what camera see as background
+        return fixed4(col*(1.0 - add.w) + add.rgb * add.w,1.0); // keep what camera see as background
         //return fixed4(add.xyz, 1.0); // make background black
         //return fixed4(i.uv.x, 0.0, 0.0, 1.0); // for debug
       }
