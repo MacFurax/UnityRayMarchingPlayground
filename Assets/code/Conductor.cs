@@ -72,6 +72,7 @@ public class Conductor : MonoBehaviour
             activeShaderHandler = shaderImputHandlers[activeShaderHandlerIdx];
             OnNewShaderActivated?.Invoke(this, new ActivateShaderEventArgs(activeShaderHandler._shader));
             activeShaderHandler.Activate();
+            Debug.Log("Activate Shader handler: " + activeShaderHandler.HandlerName);
         }
         else
         {
