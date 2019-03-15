@@ -7,8 +7,11 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
 {
     private OSCSource oscSource;
     private Dictionary<string, Vector2> posPerPlayer = new Dictionary<string, Vector2>();
-    Matrix4x4 particules = new Matrix4x4();
+    
+    private List<Vector4> particles = new List<Vector4>(10);
+    private int particlesCount = 10;
 
+    Matrix4x4 particules = new Matrix4x4();
     int maxBalls = 4;
 
     public TwoDMetaBalls()

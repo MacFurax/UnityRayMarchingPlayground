@@ -142,7 +142,7 @@ Shader "My Shaders/3DMetaballs"
       fixed4 raymarch(float3 ro, float3 rd, float s) {
           fixed4 ret = fixed4(0,0,0,0);
 
-          const int maxstep = 64; // TODO try lower
+          const int maxstep = 25; // TODO try lower
           float t = 0; // current distance traveled along ray
           for (int i = 0; i < maxstep; ++i) {
             // If we run past the depth buffer, or if we exceed the max draw distance,

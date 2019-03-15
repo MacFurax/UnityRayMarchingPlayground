@@ -85,7 +85,8 @@ public class ThreeDMetaBalls : ShaderImputHandlerBase
             {
                 Vector4 v4 = particles[x];
                 Vector3 v3 = new Vector3(v4.x, v4.y, v4.z);
-                v3 = Quaternion.Euler( Random.value * 15 * Time.deltaTime, 10 * Time.deltaTime, 0) * v3;
+                //v3 = Quaternion.Euler( Random.value * 15 * Time.deltaTime, 10 * Time.deltaTime, 0) * v3;
+                v3 = Quaternion.Euler(15 * Time.deltaTime, 10 * Time.deltaTime, 0) * v3;
                 v4 = new Vector4(v3.x, v3.y, v3.z, v4.w);
                 particles[x] = v4;
             }

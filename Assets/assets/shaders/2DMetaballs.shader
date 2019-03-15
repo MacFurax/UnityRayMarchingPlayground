@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _DisplacementTex("Displacement", 2D) = "white" {}
         
     }
     SubShader
@@ -41,6 +42,8 @@
             uniform float4 _MainTex_ST;
             uniform float2 _Resolution;
             uniform float4x4 _Particles;
+
+            uniform sampler2D _DisplacementTex;
            
             v2f vert (appdata v)
             {
@@ -74,7 +77,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float r = _ScreenParams.x / _ScreenParams.y;
-                i.uv.x *= r; // apply screen ration
+                i.uv.x *= r; // apply screen ratio
 
                 float s = 0.0f;
                 float3 spcol = float3(1.0, 1.0, 1.0);
@@ -84,7 +87,7 @@
                 for (int aa = 0; aa < 4; aa++)
                 {
                   float2 p = _Particles[aa].xy;
-                  p.x *= r; // apply screen ration
+                  p.x *= r; // apply screen ratio
 
                   float d = 1.0-distance(i.uv, p.xy); // distance from current uv to particle center
                   d = smoothstep(0.7, 1.0, d); // limit the distance field
