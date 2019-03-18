@@ -103,7 +103,8 @@
 
                 s = smoothstep(0.4, 0.41, s);
 
-                col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
+                //col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
+                col = float4(s, s, s, 1.0);
 
                 return col;
             }
