@@ -9,24 +9,13 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
     private Dictionary<string, Vector2> posPerPlayer = new Dictionary<string, Vector2>();
     
     private List<Vector4> particles = new List<Vector4>(10);
-    private int particlesCount = 10;
+    private int particlesCount = 2;
 
-    Matrix4x4 particules = new Matrix4x4();
     int maxBalls = 4;
 
     public TwoDMetaBalls()
     {
         handlerName = "2D Metaballs";
-        // set default particules position
-        //particules.SetRow(0, new Vector4(0.25f, 0.75f, 0.0f, 0.0f));
-        //particules.SetRow(0, new Vector4(0.75f, 0.75f, 0.0f, 0.0f));
-        //particules.SetRow(0, new Vector4(0.25f, 0.25f, 0.0f, 0.0f));
-        //particules.SetRow(0, new Vector4(0.75f, 0.25f, 0.0f, 0.0f));
-        particules.SetRow(0, new Vector4(0.5f, 0.5f, 0.0f, 0.0f));
-        particules.SetRow(0, new Vector4(0.6f, 0.6f, 0.0f, 0.0f));
-        particules.SetRow(0, new Vector4(-1.0f, -1.0f, 0.0f, 0.0f));
-        particules.SetRow(0, new Vector4(-1.0f, -1.0f, 0.0f, 0.0f));
-
     }
 
     /// <summary>
@@ -35,15 +24,21 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
     /// <param name="mat"></param>
     public override void PopulateUniforms(ref Material mat)
     {
-        int count = 0;
-        foreach ( Vector2 vals in posPerPlayer.Values)
+        int x = 0;
+        foreach (Vector2 playerPos in posPerPlayer.Values)
         {
-            if (count >= maxBalls) break;
-            particules[count, 0] = vals.x;
-            particules[count, 1] = vals.y;
-            count++;
+            if (x < particles.Count)
+            {
+                Vector4 v = particles[x];
+                v.x = playerPos.x;
+                v.y = playerPos.y;
+                particles[x] = v;
+            }
+            x++;
         }
-        mat.SetMatrix("_Particles", particules);
+
+        mat.SetVectorArray("_Particles", particles);
+        mat.SetInt("_ParticlesCount", particlesCount);
     }
 
     /// <summary>
@@ -89,7 +84,20 @@ public class TwoDMetaBalls : ShaderImputHandlerBase
     public override void NewMove(InputBase.ImputMoveEventArgs newMove)
     {
         
-        Debug.Log("TwoDMetaBalls::NewMove - player ["+ newMove.playerId+ "] " + newMove.pos);
+        //Debug.Log("TwoDMetaBalls::NewMove - player ["+ newMove.playerId+ "] " + newMove.pos);
         posPerPlayer[newMove.playerId] = newMove.pos;
+    }
+
+    public void Start()
+    {
+        // init balls position
+        for (int x = 0; x < particlesCount; x++)
+        {
+            Vector2 v2 = Random.insideUnitCircle;
+            float v1 = 0.1f + (Random.value/2.0f);
+            Vector4 v4 = new Vector4(v2.x, v2.y, v1, 0.0f);
+            particles.Add(v4);
+        }
+
     }
 }
