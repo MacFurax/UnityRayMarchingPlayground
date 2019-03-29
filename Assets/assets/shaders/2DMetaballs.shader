@@ -41,8 +41,9 @@
             uniform sampler2D _MainTex;
             uniform float4 _MainTex_ST;
             uniform float2 _Resolution;
-            uniform float4x4 _Particles;
 
+            uniform float4 _Particles[10];
+            uniform int _ParticlesCount;
             uniform sampler2D _DisplacementTex;
            
             v2f vert (appdata v)
@@ -80,30 +81,30 @@
                 i.uv.x *= r; // apply screen ratio
 
                 float s = 0.0f;
-                float3 spcol = float3(1.0, 1.0, 1.0);
+                float3 spcol = float3(0.0, 0.0, 0.0);
 
                 fixed4 col = float4(i.uv.x, i.uv.y, 1.0, 1.0);
 
-                for (int aa = 0; aa < 4; aa++)
+                for (int aa = 0; aa < _ParticlesCount; aa++)
                 {
                   float2 p = _Particles[aa].xy;
                   p.x *= r; // apply screen ratio
 
-                  float d = 1.0-distance(i.uv, p.xy); // distance from current uv to particle center
-                  d = smoothstep(0.7, 1.0, d); // limit the distance field
+                  // distance gradiant limited between 0 and 1
+                  // and circle radius
+                  float d = smoothstep(_Particles[aa].z, 0.001, distance(i.uv, p.xy));
                   
-                  s += d; // sum particles distance field to get praticle merge zone
+                  s += d; // sum particles distance field to get praticle merge zone 
 
-                  float uc = smoothstep(0.0,0.71, d); // 
-
-                  float3 t = HUEtoRGB(0.21*aa) * uc;
+                  float3 t = HUEtoRGB((float)aa/ _ParticlesCount);
                   spcol = (spcol + t) * 0.8;
 
                 }
 
-                s = smoothstep(0.4, 0.41, s);
+                s = smoothstep(0.5, 0.52, s);
 
                 col = float4(s*spcol.r, s*spcol.g, s*spcol.b, 1.0);
+                //col = float4(s, s, s, 1.0);
 
                 return col;
             }
