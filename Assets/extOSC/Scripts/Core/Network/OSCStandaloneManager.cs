@@ -62,7 +62,16 @@ namespace extOSC.Core.Network
 			return new IPEndPoint(IPAddress.Any, localPort);
 		}
 
-		public static IPEndPoint CreateRemoteEndPoint(string remoteHost, int remotePort)
+        public static IPEndPoint CreateLocalEndPoint(string localIP, int localPort)
+        {
+            if (localPort == 0 || localIP.Equals(""))
+                return null;
+
+            return new IPEndPoint(IPAddress.Parse(localIP), localPort);
+        }
+
+
+        public static IPEndPoint CreateRemoteEndPoint(string remoteHost, int remotePort)
 		{
 			IPAddress ipAddress;
 

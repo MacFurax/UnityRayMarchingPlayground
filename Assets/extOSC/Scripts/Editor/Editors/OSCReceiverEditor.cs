@@ -8,7 +8,7 @@ using System.Reflection;
 namespace extOSC.Editor
 {
     [CustomEditor(typeof(OSCReceiver))]
-	public class OSCReceiverEditor : UnityEditor.Editor
+    public class OSCReceiverEditor : UnityEditor.Editor
     {
         #region Static Private Vars
 
@@ -49,7 +49,7 @@ namespace extOSC.Editor
         protected void OnEnable()
         {
             _receiver = target as OSCReceiver;
-            _localHost = OSCUtilities.GetLocalHost();
+            _localHost = OSCUtilities.GetLocalHost(); // TODO replace by getting the created IPEndPoint
 
             _localPortProperty = serializedObject.FindProperty("localPort");
             _autoConnectProperty = serializedObject.FindProperty("autoConnect");
@@ -151,11 +151,11 @@ namespace extOSC.Editor
         }
 
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
-		protected void DrawControllsInGame()
+        protected void DrawControllsInGame()
         {
             EditorGUILayout.BeginHorizontal("box");
 
@@ -232,7 +232,7 @@ namespace extOSC.Editor
                 _updateMethod.Invoke(_receiver, null);
         }
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

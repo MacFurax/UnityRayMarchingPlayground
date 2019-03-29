@@ -10,6 +10,8 @@ public class OSCSource : MonoBehaviour
     //public string bindIP = "127.0.0.1";
     public int bindPort = 8000;
     public int replyPort = 9000;
+    public bool useGivenIP = false;
+    public string localIP = "";
 
     OSCReceiver _receiver;
     OSCTransmitter _transmiter;
@@ -24,6 +26,15 @@ public class OSCSource : MonoBehaviour
     {
         _receiver = gameObject.GetComponent<OSCReceiver>();
         _receiver.LocalPort = bindPort;
+        if (useGivenIP)
+        {
+            _receiver.LocalIP = localIP;
+        }
+        else
+        {
+            _receiver.LocalIP = ""; // local ip will be selected by system
+        }
+        
 
         _transmiter = gameObject.GetComponent<OSCTransmitter>();
     }

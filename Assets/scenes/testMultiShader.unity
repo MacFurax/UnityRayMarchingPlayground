@@ -298,6 +298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bindPort: 8000
   replyPort: 9000
+  useGivenIP: 1
+  localIP: 10.71.254.100
 --- !u!114 &305121037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +369,7 @@ MonoBehaviour:
   mapBundle: {fileID: 0}
   workInEditor: 0
   localPort: 8000
+  localIP: 10.71.254.100
 --- !u!114 &305121041
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,7 +35,7 @@ namespace extOSC.Core.Network
 
         #region Public Methods
 
-        public abstract void Connect(int localPort);
+        public abstract void Connect(string localIP, int localPort);
 
         public abstract void Close();
 

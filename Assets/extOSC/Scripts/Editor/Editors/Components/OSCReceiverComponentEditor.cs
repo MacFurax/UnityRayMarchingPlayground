@@ -16,31 +16,31 @@ namespace extOSC.Editor.Components
 
         private static readonly GUIContent _otherSettingsContent = new GUIContent("Other Settings:");
 
-	    private static readonly GUIContent _mapBundleContent = new GUIContent("Map Bundle:");
+        private static readonly GUIContent _mapBundleContent = new GUIContent("Map Bundle:");
 
-		#endregion
+        #endregion
 
-		#region Private Vars
+        #region Private Vars
 
-	    private OSCReceiverComponent _receiverComponent;
+        private OSCReceiverComponent _receiverComponent;
 
-		private SerializedProperty _receiverProperty;
+        private SerializedProperty _receiverProperty;
 
         private SerializedProperty _addressProperty;
 
-	    private SerializedProperty _mapBundleProperty;
+        private SerializedProperty _mapBundleProperty;
 
-		#endregion
+        #endregion
 
-		#region Unity Methods
+        #region Unity Methods
 
-		protected virtual void OnEnable()
-		{
-			_receiverComponent = target as OSCReceiverComponent;
+        protected virtual void OnEnable()
+        {
+            _receiverComponent = target as OSCReceiverComponent;
 
-			_receiverProperty = serializedObject.FindProperty("receiver");
+            _receiverProperty = serializedObject.FindProperty("receiver");
             _addressProperty = serializedObject.FindProperty("address");
-	        _mapBundleProperty = serializedObject.FindProperty("mapBundle");
+            _mapBundleProperty = serializedObject.FindProperty("mapBundle");
         }
 
         protected virtual void OnDisable()
@@ -62,19 +62,19 @@ namespace extOSC.Editor.Components
             // SETTINGS BLOCK
             EditorGUILayout.LabelField(_receiverComponentSettingsContent, EditorStyles.boldLabel);
 
-	        GUILayout.BeginVertical("box");
-			OSCEditorLayout.ReceiverSettings(_receiverProperty, _addressProperty, false);
-	        EditorGUILayout.PropertyField(_mapBundleProperty, _mapBundleContent);
+            GUILayout.BeginVertical("box");
+            OSCEditorLayout.ReceiverSettings(_receiverProperty, _addressProperty, false);
+            EditorGUILayout.PropertyField(_mapBundleProperty, _mapBundleContent);
 
-	        if (_receiverComponent.Receiver != null && _receiverComponent.Receiver.MapBundle != null &&
-	            _receiverComponent.MapBundle != null)
-	        {
-				EditorGUILayout.HelpBox("OSCReceiver already has MapBundle.", MessageType.Info);
-	        }
+            if (_receiverComponent.Receiver != null && _receiverComponent.Receiver.MapBundle != null &&
+                _receiverComponent.MapBundle != null)
+            {
+                EditorGUILayout.HelpBox("OSCReceiver already has MapBundle.", MessageType.Info);
+            }
 
-			EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
 
-			DrawSettings();
+            DrawSettings();
 
             EditorGUILayout.EndVertical();
 

@@ -43,6 +43,25 @@ namespace extOSC
             }
         }
 
+        public string LocalIP
+        {
+            get { return localIP; }
+            set
+            {
+                         
+                if (localIP == value)
+                    return;
+
+                localIP = value;
+
+                if (receiverBackend.IsRunning && IsAvailable)
+                {
+                    Close();
+                    Connect();
+                }
+            }
+        }
+
         public override bool IsAvailable
         {
             get { return receiverBackend.IsAvailable; }
@@ -58,6 +77,7 @@ namespace extOSC
         #region Protected Vars
 
         [SerializeField] protected int localPort = 7001;
+        [SerializeField] protected string localIP = "";
 
         protected Queue<OSCPacket> packets = new Queue<OSCPacket>();
 
@@ -134,12 +154,12 @@ namespace extOSC
 
         public override string ToString()
         {
-            return string.Format("<{0} (Port: {1})>", GetType().Name, localPort);
+            return string.Format("<{0} (IP: {1} Port: {2})>", GetType().Name, localIP, localPort);
         }
 
         public override void Connect()
         {
-            receiverBackend.Connect(localPort);
+            receiverBackend.Connect(localIP, localPort);
         }
 
         public override void Close()

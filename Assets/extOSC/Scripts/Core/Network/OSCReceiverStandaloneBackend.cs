@@ -38,7 +38,7 @@ namespace extOSC.Core.Network
 
         private UdpClient _client;
 
-		private IPEndPoint _localEndPoint;
+        private IPEndPoint _localEndPoint;
 
         private AsyncCallback _controllerThreadAsync;
 
@@ -48,21 +48,38 @@ namespace extOSC.Core.Network
 
         #region Public Methods
 
-        public override void Connect(int localPort)
+        public override void Connect(string localIP, int localPort)
         {
             if (_client != null)
                 Close();
 
             try
             {
-				_localEndPoint = OSCStandaloneManager.CreateLocalEndPoint(localPort);
+                if (localIP.Equals(""))
+                {
+                    _localEndPoint = OSCStandaloneManager.CreateLocalEndPoint(localPort);
 
-				_client = OSCStandaloneManager.CreateClient(_localEndPoint);
+                    _client = OSCStandaloneManager.CreateClient(_localEndPoint);
 
-                _controllerThreadAsync = new AsyncCallback(ControllerThread);
-                _client.BeginReceive(_controllerThreadAsync, _client);
+                    _controllerThreadAsync = new AsyncCallback(ControllerThread);
+                    _client.BeginReceive(_controllerThreadAsync, _client);
 
-                _isRunning = true;
+                    _isRunning = true;
+                }
+                else
+                {
+                    _localEndPoint = OSCStandaloneManager.CreateLocalEndPoint(localIP, localPort);
+                    
+                    _client = OSCStandaloneManager.CreateClient(_localEndPoint);
+
+                    _controllerThreadAsync = new AsyncCallback(ControllerThread);
+                    _client.BeginReceive(_controllerThreadAsync, _client);
+
+                    _isRunning = true;
+                }
+
+                Debug.Log("extOSC localEndPoint " + _localEndPoint);
+
             }
             catch (SocketException e)
             {
@@ -97,7 +114,7 @@ namespace extOSC.Core.Network
         {
             _isRunning = false;
 
-			OSCStandaloneManager.RemoveClient(_client);
+            OSCStandaloneManager.RemoveClient(_client);
 
             _client = null;
         }
